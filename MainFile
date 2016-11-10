@@ -1,0 +1,153 @@
+#include <assert.h>
+#include <ostream>
+#include <iostream>
+using namespace std;
+
+class Book
+{
+public:
+	Book::Book(string bookTitle, string bookAuthor, int bookNumber);
+	Book() {};
+
+	string getTitle() const;
+	string getAuthor() const;
+	int getNumber() const;
+
+	void setTitle(string titleParam);
+	void setAuthor(string authorParam);
+	void setNumber(int numberParam);
+
+	Book* getNext() const { return next; }
+	void setNext(Book* nextParam) { next = nextParam; }
+	Book* getPrevious() const { return previous; }
+	void setPrevious(Book* previousParam) { next = previousParam; }
+
+	void removeBook(int bookParam);
+
+	void printDetails(Book *first);
+	void printBookList(Book *first);
+
+private:
+	string bookTitle;
+	string bookAuthor;
+	int bookNumber;
+	int selection;
+	Book* next;
+	Book* previous;
+};
+
+Book::Book(string bookTitle, string bookAuthor, int bookNumber)
+	:bookTitle(bookTitle), bookAuthor(bookAuthor), bookNumber(bookNumber)
+{
+	next = NULL;
+	previous = NULL;
+}
+
+string Book::getTitle() const
+{
+	return bookTitle;
+}
+
+string Book::getAuthor() const
+{
+	return bookAuthor;
+}
+
+int Book::getNumber() const
+{
+	return bookNumber;
+}
+
+void Book::setTitle(string titleParam)
+{
+	bookTitle = titleParam;
+}
+
+void Book::setAuthor(string authorParam)
+{
+	bookAuthor = authorParam;
+}
+
+void Book::setNumber(int numberParam)
+{
+	bookNumber = numberParam;
+}
+
+void Book::printDetails(Book *first)
+{
+	/*cout << "#" << "		Title" << "		Author" << endl;
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		cout << nextBook->getNumber() << "		" << nextBook->getTitle() << "		" << nextBook->getAuthor() << endl;
+		nextBook = nextBook->getNext();
+	}*/
+}
+
+void Book::printBookList(Book *first)
+{
+	cout << "#" << "		Title" << "		Author" << endl;
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		cout << nextBook->getNumber() << "			" << nextBook->getTitle() << "		" << nextBook->getAuthor() << endl;
+		nextBook = nextBook->getNext();
+	}
+}
+
+/*int returnSelection()
+{
+	cout << "Welcome to the AIT Book Store!" << endl;
+	cout << "\n";
+	cout << "What would you like to do:" << endl;
+	cout << "1. See our full catalogue of books!" << endl;
+	cout << "\n";
+
+	int selection;
+	cout << "Enter Number of Sevice Here: ";
+	cin >> selection;
+	return selection;
+}*/
+
+void main()
+{
+	Book *potter = new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 1);
+	Book *hobbit = new Book("The Hobbit", "J. R. R. Tolkien", 2);
+	Book *davinci = new Book("The DaVinci Code", "Dan Brown", 3);
+	Book *charlotte = new Book("Charlotte's Web", "White", 4);
+	Book *war = new Book("War and Peace", "Leo Tolstoy", 5);
+	Book *mockingbird = new Book("To Kill a Mockingbird", "Harper Lee", 6);
+	Book *wind = new Book("Gone With the Wind", "Margaret Mitchell", 7);
+	Book *godfather = new Book("The Godfather", "Mario Puzo", 8);
+	Book *jaws = new Book("Jaws", "Peter Benchley", 9);
+	Book *moon = new Book("Goodnight Moon", "Margaret Wise Brown", 10);
+
+	potter->setNext(hobbit);
+	hobbit->setNext(davinci);
+	davinci->setNext(charlotte);
+	charlotte->setNext(war);
+	war->setNext(mockingbird);
+	mockingbird->setNext(wind);
+	wind->setNext(godfather);
+	godfather->setNext(jaws);
+	jaws->setNext(moon);
+
+	cout << "Welcome to the AIT Book Store!" << endl;
+	cout << "\n";
+	cout << "What would you like to do:" << endl;
+	cout << "1. See our full catalogue of books!" << endl;
+	cout << "\n";
+
+	int selection;
+	cout << "Enter Number of Sevice Here: ";
+	cin >> selection;
+
+	//returnSelection();
+
+	if(selection==1)
+	{
+		potter->printBookList(potter);
+	}
+
+	system("pause");
+}
