@@ -1,0 +1,272 @@
+Main:
+#include "Book.h"
+#include <assert.h>
+#include <ostream>
+#include <iostream>
+#include <string>
+using namespace std;
+
+void main()
+{
+	Book *potter = new Book("Harry Potter", "JK Rowling", 1);
+	Book *hobbit = new Book("The Hobbit", "JRR Tolkien", 2);
+	Book *davinci = new Book("The DaVinci Code", "Dan Brown", 3);
+	Book *charlotte = new Book("Charlotte's Web", "EB White", 4);
+	Book *war = new Book("War and Peace", "Leo Tolstoy", 5);
+	Book *shining = new Book("The Shining", "Stephen King", 6);
+	Book *wind = new Book("Gone With the Wind", "Margaret Mitchell", 7);
+	Book *godfather = new Book("The Godfather", "Mario Puzo", 8);
+	Book *jaws = new Book("Jaws", "Peter Benchley", 9);
+	Book *moon = new Book("Goodnight Moon", "Margaret Wise Brown", 10);
+
+	/*potter->setNext(hobbit);
+	hobbit->setNext(davinci);
+	davinci->setNext(charlotte);
+	charlotte->setNext(war);
+	war->setNext(shining);
+	shining->setNext(wind);
+	wind->setNext(godfather);
+	godfather->setNext(jaws);
+	jaws->setNext(moon);*/
+
+	potter->addBook();
+	hobbit->addBook();
+	davinci->addBook();
+	charlotte->addBook();
+	war->addBook();
+	shining->addBook();
+	wind->addBook();
+	godfather->addBook();
+	jaws->addBook();
+	moon->addBook();
+
+	cout << "Welcome to the AIT Book Store!" << endl;
+	cout << "\n";
+	cout << "What would you like to do:" << endl;
+	cout << "1. See our full catalogue of books!" << endl;
+	cout << "2. Search for a book by Name!" << endl;
+	cout << "3. Search for a book by Author!" << endl;
+	cout << "4. Search for a book by ISBN Number!" << endl;
+
+	int selection;
+	cout << "\n";
+	cout << "Enter Number of Sevice Here: ";
+	cin >> selection;
+
+	if(selection==1)
+	{
+		potter->printBookList(potter);
+	}
+	else if(selection==2)
+	{
+		potter->searchTitle(potter);
+	}
+	else if(selection==3)
+	{
+		potter->searchAuthor(potter);
+	}
+	else if(selection==4)
+	{
+		potter->searchNumber(potter);
+	}
+	system("pause");
+}
+
+Book.cpp:
+#include "Book.h"
+
+Book::Book(string bookTitle, string bookAuthor, int bookNumber)
+	:bookTitle(bookTitle), bookAuthor(bookAuthor), bookNumber(bookNumber)
+{
+	next = NULL;
+	previous = NULL;
+}
+
+string Book::getTitle() const
+{
+	return bookTitle;
+}
+
+string Book::getAuthor() const
+{
+	return bookAuthor;
+}
+
+int Book::getNumber() const
+{
+	return bookNumber;
+}
+
+void Book::setTitle(string titleParam)
+{
+	bookTitle = titleParam;
+}
+
+void Book::setAuthor(string authorParam)
+{
+	bookAuthor = authorParam;
+}
+
+void Book::setNumber(int numberParam)
+{
+	bookNumber = numberParam;
+}
+
+void Book::printDetails()
+{
+	cout << bookTitle << ", " << bookAuthor << ", " << bookNumber << endl;
+}
+
+void Book::printBookList(Book *first)
+{
+	cout << "#" << "  Title" << "				Author" << endl;
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		cout << nextBook->getNumber() << "  " << nextBook->getTitle() << "			" << nextBook->getAuthor() << endl;
+		nextBook = nextBook->getNext();
+	}
+}
+
+void Book::addBook()
+{
+	Book* previous = getPrevious();
+	Book* next = getNext();
+
+	if(next != NULL)
+	{
+		setNext(next);
+		next->setPrevious(this);
+	}
+	else
+		next = NULL;
+
+	if(previous != NULL)
+	{
+		setPrevious(previous);
+		previous->setNext(this);
+	}
+	else
+		previous = NULL;
+}
+
+void Book::searchTitle(Book *first)
+{
+	string nameSearch;
+	int count = 0;
+
+	cout << "Please enter the name of the book you are looking for: ";
+	cin >> nameSearch;
+
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		if(nextBook->getTitle() == nameSearch)
+		{
+			cout << "We found the following books: ";
+			nextBook->printDetails();
+			count++;
+		}
+		nextBook = nextBook->getNext();
+	}
+	if(count == 0)
+	{
+		cout << "There are no books in the list with that name" << endl;
+	}
+}
+
+void Book::searchAuthor(Book *first)
+{
+	string authorSearch;
+	int count = 0;
+
+	cout << "Please enter the name of the author you are looking for: ";
+	cin >> authorSearch;
+
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		if(authorSearch == nextBook->getAuthor())
+		{
+			cout << "We found the following books: ";
+			nextBook->printDetails();
+			count++;
+			nextBook = nextBook->getNext();
+		}
+		nextBook = nextBook->getNext();
+	}
+	if(count == 0)
+	{
+		cout << "There are no authors in the list with that name" << endl;
+	}
+}
+
+void Book::searchNumber(Book *first)
+{
+	int numberSearch;
+	int count = 0;
+
+	cout << "Please enter the ISBN Number of the book you are looking for: ";
+	cin >> numberSearch;
+
+	Book* nextBook = first;
+	while (nextBook != NULL)
+	{
+		if(nextBook->getNumber() == numberSearch)
+		{
+			cout << "We found the following books: ";
+			nextBook->printDetails();
+			count++;
+		}
+		nextBook = nextBook->getNext();
+	}
+	if(count == 0)
+	{
+		cout << "There are no books in the list with that ISBN number" << endl;
+	}
+}
+
+Book.h
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Book
+{
+public:
+	Book::Book(string bookTitle, string bookAuthor, int bookNumber);
+	Book() {};
+
+	string getTitle() const;
+	string getAuthor() const;
+	int getNumber() const;
+
+	void setTitle(string titleParam);
+	void setAuthor(string authorParam);
+	void setNumber(int numberParam);
+
+	Book* getNext() const { return next; }
+	void setNext(Book* nextParam) { next = nextParam; }
+	Book* getPrevious() const { return previous; }
+	void setPrevious(Book* previousParam) { next = previousParam; }
+
+	void addBook();
+
+	void printDetails();
+	void printBookList(Book *first);
+
+	void searchTitle(Book *first);
+	void searchAuthor(Book *first);
+	void searchNumber(Book *first);
+
+private:
+	string bookTitle;
+	string bookAuthor;
+	int bookNumber;
+	int selection;
+	Book* next;
+	Book* previous;
+};
+
+
+#endif //BOOK_H
